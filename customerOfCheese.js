@@ -17,12 +17,11 @@ function listProducts() {
         console.log(`-------------------------------------------------------------`);
         console.log(`             🧀 Glorious Cheeses of the World 🧀             `);
         console.log(`-------------------------------------------------------------`);
-        for (let i=0; i<res.length; i++) {
+        for (let i = 0; i < res.length; i++) {
             console.log(`\n🧀 ${res[i].product_name} (Glorious), Country of Origin: ${res[i].department_name}
             Id: ${res[i].item_id}, Cost per Unit (USD): ${res[i].price}`);
         };
         exit();
-        
     });
 };
 
@@ -31,16 +30,19 @@ function exit() {
     inquirer.prompt([
         {
             type: "list",
-            message: "Order Glorious Cheeses or Exit the Glorious Cheese Shoppe?",
-            choices: ["Order","Exit"],
+            message: "Order Glorious Cheeses, View Glorious Cheeses, or Exit the Glorious Cheese Shoppe?",
+            choices: ["Order", "View", "Exit"],
             name: "exit"
         }
     ]).then(function (response) {
-        if ( response.exit == "Exit") {
+        if (response.exit == "Exit") {
             connection.end();
         }
         else if (response.exit == "Order") {
             order();
+        }
+        else if (response.exit == "View") {
+            listProducts();
         }
     })
 }
@@ -63,7 +65,7 @@ function order() {
     ]).then(function (response) {
         var selectedId = response.id;
         var selectedNumber = response.number;
-        var queryString = "select * from cheese_db.cheeses where `item_id` = " + selectedId; 
+        var queryString = "select * from cheese_db.cheeses where `item_id` = " + selectedId;
 
         function checkInventory() {
             connection.query(queryString, function (err, res) {
@@ -84,7 +86,7 @@ function order() {
                 console.log(`------------------------------------------------------------`);
                 console.log(`Your total for ${selectedNumber} unit(s) of Glorious ${selectedCheese} from ${selectedDepartment} is:\nUSD ${customerCost}`)
                 console.log(`------------------------------------------------------------`);
-                
+
                 inquirer.prompt([
                     {
                         type: "confirm",
@@ -93,7 +95,27 @@ function order() {
                     }
                 ]).then(function (response) {
                     if (response.confirm) {
-                        console.log(`------------------------------------------------------------`);
+                        function updateDB() {
+                            var updatedQuantity = selectedInventoryQuantity - selectedNumber;
+                            connection.query(
+                                "UPDATE cheeses SET ? WHERE ?",
+                                [
+                                    {
+                                        stock_quantity: updatedQuantity
+                                    },
+                                    {
+                                        item_id: selectedId
+                                    }
+                                ],
+                                function (err, res) {
+                                    console.log(`\n------------------------------------------------------------`);
+                                    console.log(`                  🧀 Thine be the Glory 🧀                   `);
+                                    console.log(`----------------------------------------------------------🐈`);
+                                }
+                            );
+                        }
+                        updateDB();
+                        console.log(`\n------------------------------------------------------------`);
                         console.log(`                  🧀 Thine be the Glory 🧀                   `);
                         console.log(`----------------------------------------------------------🐈`);
                         exit();
@@ -106,6 +128,7 @@ function order() {
                 });
             });
         };
+
         checkInventory();
     });
 };
