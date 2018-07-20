@@ -2,7 +2,7 @@
 
 Cheese-Shoppe is a node.js/MySql app that allows cheese shoppers to order glorious cheeses from Glorious Cheeses of the World. Shoppers can view a menu of glorious cheeses held in a MySql database, order glorious cheeses if enough exists in database inventory, and exit the shoppe.
 
-### Set-Up
+## Set-Up
 
 1. Download files.
 2. Start a server for MySql on port 3306.
@@ -11,7 +11,7 @@ Cheese-Shoppe is a node.js/MySql app that allows cheese shoppers to order glorio
 5. `npm install` to add dependencies.
 6. `node customerOfCheese` to enter customer interface or `node managerOfCheese` to enter manager interface.
 
-### Customer Interface
+## Customer Interface
 
 The cheese shopper is initially presented with the list of glorious cheeses in the database, their country of origin, their id number, and their cost per unit. This list is followed by the main menu.
 
@@ -27,7 +27,7 @@ When 'Order' is chosen, the cheese shopper is prompted for the id number and num
 
 If order is confirmed, the database is updated with the new number of units available and the cheese customer is directed back to the main menu.
 
-### Manager Interface
+## Manager Interface
 
 The cheese manager is initially directed to the main menu. From the main menu, the cheese manager can view all glorious cheeses for sale, view low inventory, add inventory, or add a new glorious cheese.
 
