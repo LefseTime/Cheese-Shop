@@ -120,11 +120,9 @@ function addInventory() {
     });
 };
 
-function addNew () {
+function addNew() {
     console.log(`\n-------------------------------------------------------------`);
-    console.log(`                                ✨✨✨✨✨✨                      `);
     console.log(`                      🧀 Add New Glorious Cheese 🧀             `);
-    console.log(`                                ✨✨✨✨✨✨                       `);
     console.log(`-------------------------------------------------------------`);
     inquirer.prompt([
         {
@@ -157,14 +155,15 @@ function addNew () {
         connection.query(
             "INSERT INTO cheeses SET ?",
             {
-              product_name: newName,
-              department_name: newCountry,
-              price: newPrice,
-              stock_quantity: newInventory
+                product_name: newName,
+                department_name: newCountry,
+                price: newPrice,
+                stock_quantity: newInventory
             },
             function (err, res) {
-              console.log(res.affectedRows + " product inserted!\n");
-              menu();
+                if (err) throw err;
+                console.log(res.affectedRows + " type of Glorious Cheese added!\n");
+                menu();
             }
         );
     });
